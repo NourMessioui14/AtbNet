@@ -1,0 +1,183 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container">
+           <h1 class="red-title">Formulaire ATBNET / ATB Mobile</h1>
+ {# Afficher le message de succès s'il est présent dans le flashbag #}
+   
+{% for flashMessage in app.flashes('success') %}
+    <div class="alert alert-success">
+        {{ flashMessage }}
+    </div>
+{% endfor %}
+
+
+    <div class="row">
+    <div class="col-md-6">
+            {{ form_start(form, {'attr': {'id': 'formulaire'}}) }} {# Changer l'ID en "formulaire" #}
+        
+        <div class="form-group">
+            {{ form_label(form.nom, 'Nom & Prénom * :') }}
+    {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'rows': 5, 'placeholder': 'Entrer votre nom'}}) }}
+        </div>
+        <!-- ... autres champs de formulaire ... -->
+    </div>
+</div>
+
+          <div class="form-group">
+    {{ form_label(form.gsm,'N° de GSM * :') }}
+    {{ form_widget(form.gsm, {'attr': {'class': 'form-control', 'rows': 5, 'placeholder': 'Entrer votre numero de telephone'}}) }}
+    {% if form.gsm.vars.value is defined %}
+        {% set gsmValue = form.gsm.vars.value|replace({' ': ''}) %}
+        {% if gsmValue is empty %}
+            <div class="text-danger">Le numéro de GSM ne peut pas être vide.</div>
+        {% elseif gsmValue|length > 8 %}
+            <div class="text-danger">Le numéro de GSM ne doit pas dépasser 8 chiffres.</div>
+        {% elseif not gsmValue matches '/^\d+$/' %}
+            <div class="text-danger">Le numéro de GSM doit contenir uniquement des chiffres.</div>
+        {% endif %}
+    {% endif %}
+</div>
+
+
+          <div class="form-group">
+    {{ form_label(form.cin,'N° de CIN * :') }}
+    {{ form_widget(form.cin, {'attr': {'class': 'form-control', 'placeholder': 'Entrer votre numero de carte identite'}}) }}
+    
+    {% if form.cin.vars.value is defined %}
+        {% set cinValue = form.cin.vars.value | replace({' ': ''}) %}
+        {% if cinValue is empty %}
+            <div class="text-danger">Le numéro de CIN ne peut pas être vide.</div>
+        {% elseif cinValue | length > 8 %}
+            <div class="text-danger">Le numéro de CIN ne doit pas dépasser 8 chiffres  </div>
+        {% elseif not cinValue matches '/^\d+$/' %}
+            <div class="text-danger">Le numéro de CIN doit contenir uniquement des chiffres.</div>
+        {% endif %}
+    {% endif %}
+</div>
+
+
+
+            <div class="form-group">
+                {{ form_label(form.agence) }}
+                {{ form_widget(form.agence, {'attr': {'class': 'form-control', 'rows': 5}}) }}
+            </div>
+
+<div class="form-group">
+        <img src="{{ asset('back/images/atb.png') }}" alt="ATB Logo" style="max-width: 300px; max-height: 300px;">
+
+    <label>{{ form_label(form.compte,'Les six derniers chiffres de votre n° de compte * :') }}</label>
+    <div class="input-with-image">
+        {{ form_widget(form.compte, {'attr': {'class': 'form-control', 'placeholder': 'Entrer votre numero de compte'}}) }}
+    </div>
+    {% if form.compte.vars.errors|length > 0 %}
+        <div class="text-danger">
+            {{ form_errors(form.compte) }}
+        </div>
+    {% endif %}
+</div>
+
+
+
+          <div class="form-group">
+    {{ form_label(form.prem_chiffres,'Les quatre premiers chiffres de votre carte bancaire * :') }}
+    {{ form_widget(form.prem_chiffres, {'attr': {'class': 'form-control', 'placeholder': 'Entrer les premiers chiffres de votre carte'}}) }}
+    {% if form.prem_chiffres.vars.errors|length > 0 %}
+        <div class="text-danger">
+            {{ form_errors(form.prem_chiffres) }}
+        </div>
+    {% endif %}
+</div>
+<div class="form-group">
+    <img src="{{ asset('back/images/premiers.png') }}" alt="ATB Logo" style="max-width: 200px; max-height: 200px;">
+</div>
+
+
+
+            <div class="form-group">
+    {{ form_label(form.derniers_chiffres,'Les quatre derniers chiffres de votre carte bancaire * :') }}
+    {{ form_widget(form.derniers_chiffres, {'attr': {'class': 'form-control', 'placeholder': 'Entrer les derniers chiffres de votre carte'}}) }}
+    {% if form.derniers_chiffres.vars.errors|length > 0 %}
+        <div class="text-danger">
+            {{ form_errors(form.derniers_chiffres) }}
+        </div>
+    {% endif %}
+</div>
+<div class="form-group">
+    <img src="{{ asset('back/images/dernier_chiffre.png') }}" alt="ATB Logo" style="max-width: 200px; max-height: 200px;">
+</div>
+
+
+
+            <div class="form-group">
+    {{ form_label(form.mail,'Adresse E-mail * :') }}
+    {{ form_widget(form.mail, {'attr': {'class': 'form-control', 'rows': 5, 'placeholder': 'Entrer votre adresse mail'}}) }}
+    {% if form.mail.vars.errors|length > 0 %}
+        <div class="text-danger">
+            {{ form_errors(form.mail) }}
+        </div>
+    {% endif %}
+</div>
+<div class="form-group">
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="conditionsCheck">
+        <label class="form-check-label" for="conditionsCheck">
+            Je certifie avoir lu et approuvé les conditions générales d’utilisation des services de banque en ligne ATBNET et ATB MobileLes mentions obligatoires, signalées par une * étoile
+        </label>
+    </div>
+</div>
+{# captcha  #}
+
+
+
+
+            
+<div class="form-group text-center">
+    <button type="submit" class="btn btn-danger">Envoyer</button>
+    <a href="https://www.atb.tn/ae/" class="btn btn-primary">completer la navigation</a>
+
+    
+</div>
+            {{ form_end(form) }}
+            
+            {# <a href="{{ path('app_list_form') }}">Retour à la liste des formulaires</a> #}
+        <!-- Message de succès (initiallement caché) -->
+            <div id="successMessage" style="display: none;" class="alert alert-success">
+                Votre formulaire a été soumis avec succès.
+            </div>
+
+            <div style="display: none;">
+                <input type="text" name="anti_spam" id="anti_spam">
+            </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var form = document.getElementById("formulaire"); // Assurez-vous que l'ID correspond à votre formulaire
+    var formContainer = document.querySelector(".container"); // Conteneur du formulaire
+    var successMessage = document.getElementById("successMessage");
+
+    form.addEventListener("submit", function(event) {
+        var antiSpamField = document.getElementById("anti_spam");
+
+        if (antiSpamField.value !== "") {
+            event.preventDefault();
+            alert("Veuillez confirmer que vous n'êtes pas un robot.");
+            return false;
+        }
+
+        // Masquer le formulaire
+        formContainer.style.display = "none";
+
+        // Afficher le message de succès
+        successMessage.style.display = "block";
+
+        // Vous pouvez rediriger l'utilisateur après un certain délai (facultatif)
+        setTimeout(function () {
+            window.location.href = "https://www.atb.tn/demande-atbnet.php";
+        }, 5000); // Redirection après 5 secondes (facultatif)
+    });
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+<table class="table table-hover">
+  <thead class="thead-dark">
+    <tr>
+      {# <th scope="col">ID</th> #}
+      <th scope="col">id </th>
+      <th scope="col"> nom </th>
+      <th scope="col"> gsm </th>
+      <th scope="col"> cin </th>
+      <th scope="col"> agence </th>
+      <th scope="col"> compte </th>
+      <th scope="col"> derniers chiffre </th>
+      <th scope="col"> premiers chiffres </th>
+      <th scope="col"> mail </th>
+
+    </tr>
+  </thead>
+  <tbody>
+    {% for rep in form %}
+    <tr>
+       <td>{{ rep.id }}</td> 
+      <td>{{ rep.nom }}</td>
+      <td>{{ rep.cin }}</td>
+      <td>{{ rep.gsm }}</td>
+      <td>{{ rep.compte }}</td>
+      <td>{{ rep.prem_chiffres }}</td>
+      <td>{{ rep.derniers_chiffres }}</td>
+      <td>{{ rep.agence}}</td>
+      <td>{{ rep.mail }}</td>
+
+      
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
